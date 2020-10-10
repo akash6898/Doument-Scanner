@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    BuildContext context1 = context;
     return MaterialApp(
       navigatorKey: Get.key,
       home: Scaffold(
