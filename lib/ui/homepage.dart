@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import '../backend/firebase.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_genius_scan/flutter_genius_scan.dart';
-
 import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    Server _server = Provider.of<Server>(context);
     return MaterialApp(
       navigatorKey: Get.key,
       home: Scaffold(
@@ -42,13 +44,16 @@ class _HomePage extends State<HomePage> {
                 FlutterGeniusScan.scanWithConfiguration({
                   'source': 'camera',
                   'multiPage': true,
-                }).then((result) {
+                }).then((result) async {
                   String pdfUrl = result['pdfUrl'];
-                  OpenFile.open(pdfUrl.replaceAll("file://", ''))
-                      .then((result) => debugPrint(result.toString()),
-                          onError: (error) {
-                    displayError(error);
-                  });
+                  File _file =
+                      File.fromUri(Uri(path: pdfUrl.replaceAll("file://", '')));
+                  await _server.uploadFile(_file);
+                  // OpenFile.open(pdfUrl.replaceAll("file://", ''))
+                  //     .then((result) => debugPrint(result.toString()),
+                  //         onError: (error) {
+                  //   displayError(error);
+                  // });
                 }, onError: (error) => displayError(error));
               }),
         ),

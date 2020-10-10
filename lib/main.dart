@@ -14,7 +14,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<Server>(
+    return ChangeNotifierProvider<Server>(
       create: (_) => Server(),
       child: HomePage(),
     );
