@@ -9,6 +9,7 @@ import 'package:flutter_genius_scan/flutter_genius_scan.dart';
 import 'package:open_file/open_file.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'pdfviewer.dart';
 
 import 'confirmation.dart';
 
@@ -62,7 +63,10 @@ class _PdfListState extends State<PdfList> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 isThreeLine: false,
-                //dense: true,
+                onTap: () {
+                  Get.to(PdfViewwer(snapshot.data.docs[index].data()['url'],
+                      snapshot.data.docs[index].data()['name']));
+                },
                 trailing: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () async {
