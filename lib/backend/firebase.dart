@@ -34,4 +34,9 @@ class Server extends ChangeNotifier {
     });
     return _url;
   }
+
+  Future<QuerySnapshot> getAllPdfs() async {
+    QuerySnapshot temp = await databaseReference.collection("pdfs").get();
+    return temp;
+  }
 }

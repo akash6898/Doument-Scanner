@@ -9,6 +9,7 @@ import 'package:flutter_genius_scan/flutter_genius_scan.dart';
 import 'package:open_file/open_file.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'pdfList.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -26,9 +27,7 @@ class _HomePage extends State<HomePage> {
         appBar: AppBar(
           title: const Text('GS SDK Flutter Demo'),
         ),
-        body: Center(
-          child: Text("No"),
-        ),
+        body: PdfList(),
         floatingActionButton: Padding(
           padding: const EdgeInsets.all(10.0),
           child: GestureDetector(
