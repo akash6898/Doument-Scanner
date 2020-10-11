@@ -17,8 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  TextEditingController _controller = new TextEditingController();
-  @override
   Widget build(BuildContext context) {
     Server _server = Provider.of<Server>(context);
     return MaterialApp(
@@ -53,9 +51,12 @@ class _HomePage extends State<HomePage> {
                   File _file =
                       File.fromUri(Uri(path: pdfUrl.replaceAll("file://", '')));
                   DateTime now = new DateTime.now();
+                  String time = now.toString();
+                  int i = time.indexOf('.');
+                  time = time.substring(0, i);
                   String _url = await _server.uploadFile(_file, now.toString());
-                  await _server.createData(
-                      'pdfs', {'name': now.toString(), 'url': _url});
+                  await _server.createData('pdfs',
+                      {'name': "Scan" + time, 'url': _url, 'created on': time});
                   Get.back();
                   // OpenFile.open(pdfUrl.replaceAll("file://", ''))
                   //     .then((result) => debugPrint(result.toString()),
@@ -70,119 +71,17 @@ class _HomePage extends State<HomePage> {
   }
 
   void displayError(PlatformException error) {
-    Get.defaultDialog(
-        title: "Error",
-        middleText: error.message,
-        confirm: FlatButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: Text(
-              "OK",
-              style: TextStyle(color: Colors.blue),
-            )));
+    Get.dialog(AlertDialog(
+      title: const Text("Error"),
+      content: Text(error.message),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text("OK"),
+        ),
+      ],
+    ));
   }
-
-  // Future edit([int index = -1]) async {
-  //   if (index != -1) {
-  //     _controller.text;
-  //   }
-  //   await Get.bottomSheet(
-  //       Container(
-  //         padding: EdgeInsets.all(20),
-  //         height: 250,
-  //         child: Column(
-  //           children: [
-  //             Center(
-  //                 child: Text(
-  //               index == -1 ? "ADD" : "Edit Teacher",
-  //               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-  //             )),
-  //             SizedBox(
-  //               height: 30,
-  //             ),
-  //             TextField(
-  //               controller: _controller,
-  //               decoration: InputDecoration(
-  //                 border: OutlineInputBorder(),
-  //                 labelText: "Teacher Name",
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 30,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //               children: [
-  //                 Container(
-  //                   height: 40,
-  //                   width: 120,
-  //                   child: RaisedButton(
-  //                     color: Theme.of(context).primaryColor,
-  //                     onPressed: () {
-  //                       if (index != -1)
-  //                         _graphco.updatep(index, _controller.text);
-  //                       else
-  //                         _graphco.addp(_controller.text);
-
-  //                       Get.back();
-  //                     },
-  //                     child: Row(
-  //                       children: [
-  //                         Icon(
-  //                           index == -1 ? Icons.add : Icons.edit,
-  //                           color: Colors.white,
-  //                         ),
-  //                         Text(
-  //                           index == -1 ? "  Create" : "  Update",
-  //                           style: TextStyle(
-  //                               fontSize: 16,
-  //                               color: Colors.white,
-  //                               fontWeight: FontWeight.normal),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 if (index != -1)
-  //                   Container(
-  //                     height: 40,
-  //                     width: 120,
-  //                     child: RaisedButton(
-  //                       color: Theme.of(context).primaryColor,
-  //                       onPressed: () {
-  //                         _graphco.deletep(index);
-
-  //                         Get.back();
-  //                       },
-  //                       child: Row(
-  //                         children: [
-  //                           Icon(
-  //                             Icons.delete,
-  //                             color: Colors.white,
-  //                           ),
-  //                           Text(
-  //                             "  Delete",
-  //                             style: TextStyle(
-  //                                 fontSize: 16,
-  //                                 color: Colors.white,
-  //                                 fontWeight: FontWeight.normal),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                     ),
-  //                   ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //         decoration: BoxDecoration(
-  //             color: Colors.white,
-  //             borderRadius: new BorderRadius.only(
-  //                 topLeft: const Radius.circular(10.0),
-  //                 topRight: const Radius.circular(10.0))),
-  //       ),
-  //       shape: RoundedRectangleBorder(),
-  //       elevation: 0);
-  // }
 }

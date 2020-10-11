@@ -16,10 +16,12 @@ class Server extends ChangeNotifier {
 
   Future createData(String path, Map<String, dynamic> data) async {
     await databaseReference.collection(path).add(data);
+    notifyListeners();
   }
 
   Future updateData(String s, String id, Map<String, dynamic> data) async {
     await databaseReference.collection(s).doc(id).update(data);
+    notifyListeners();
   }
 
   Future<String> uploadFile(File _file, String name) async {
@@ -33,6 +35,14 @@ class Server extends ChangeNotifier {
       _url = fileURL.toString();
     });
     return _url;
+  }
+
+  Future<void> delete(String id, String url) async {
+    databaseReference.collection("pdfs").doc(id).delete();
+    notifyListeners();
+    StorageReference storageReference =
+        await FirebaseStorage.instance.getReferenceFromUrl(url);
+    storageReference.delete();
   }
 
   Future<QuerySnapshot> getAllPdfs() async {
