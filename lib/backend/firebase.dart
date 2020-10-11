@@ -7,10 +7,25 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
 class Server extends ChangeNotifier {
-  Future<String> uploadFile(File _file) async {
+  // ignore: deprecated_member_use
+  final databaseReference = Firestore.instance;
+  CollectionReference getData(String s) {
+    final _paq = databaseReference.collection(s);
+    return _paq;
+  }
+
+  Future createData(String path, Map<String, dynamic> data) async {
+    await databaseReference.collection(path).add(data);
+  }
+
+  Future updateData(String s, String id, Map<String, dynamic> data) async {
+    await databaseReference.collection(s).doc(id).update(data);
+  }
+
+  Future<String> uploadFile(File _file, String name) async {
     String _url;
     StorageReference storageReference =
-        FirebaseStorage.instance.ref().child('pdfs/${_file.path}');
+        FirebaseStorage.instance.ref().child('pdfs/scanned_pdf$name');
     StorageUploadTask uploadTask = storageReference.putFile(_file);
     await uploadTask.onComplete;
     print('File Uploaded');
