@@ -1,13 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:provider/provider.dart';
 import '../backend/firebase.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_genius_scan/flutter_genius_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'confirmation.dart';
 import 'loading.dart';
 import 'pdfList.dart';
 
@@ -80,10 +78,5 @@ class _HomePage extends State<HomePage> {
         ),
       ],
     ));
-  }
-
-  Future<bool> confirmation() async {
-    final bool res = await Get.dialog(Confirmation());
-    return res;
   }
 }
