@@ -1,14 +1,14 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';
 import '../backend/firebase.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_genius_scan/flutter_genius_scan.dart';
-import 'package:open_file/open_file.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'confirmation.dart';
+import 'loading.dart';
 import 'pdfList.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,11 +23,11 @@ class _HomePage extends State<HomePage> {
       navigatorKey: Get.key,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('GS SDK Flutter Demo'),
+          title: const Text('Document Scanner'),
         ),
         body: PdfList(),
         floatingActionButton: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(8),
           child: GestureDetector(
               child: Container(
                 height: 50,
@@ -35,7 +35,7 @@ class _HomePage extends State<HomePage> {
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
                 child: Icon(
-                  Icons.photo_camera_outlined,
+                  Icons.add,
                   color: Colors.white,
                 ),
               ),
@@ -44,9 +44,7 @@ class _HomePage extends State<HomePage> {
                   'source': 'camera',
                   'multiPage': true,
                 }).then((result) async {
-                  Get.dialog(AlertDialog(
-                    content: CircularProgressIndicator(),
-                  ));
+                  Get.dialog(Loading("Uploding..."));
                   String pdfUrl = result['pdfUrl'];
                   File _file =
                       File.fromUri(Uri(path: pdfUrl.replaceAll("file://", '')));
@@ -55,14 +53,13 @@ class _HomePage extends State<HomePage> {
                   int i = time.indexOf('.');
                   time = time.substring(0, i);
                   String _url = await _server.uploadFile(_file, now.toString());
-                  await _server.createData('pdfs',
-                      {'name': "Scan" + time, 'url': _url, 'created on': time});
+                  await _server.createData('pdfs', {
+                    'name': "Scan" + time,
+                    'url': _url,
+                    'created on': time,
+                    'timestamp': Timestamp.now()
+                  });
                   Get.back();
-                  // OpenFile.open(pdfUrl.replaceAll("file://", ''))
-                  //     .then((result) => debugPrint(result.toString()),
-                  //         onError: (error) {
-                  //   displayError(error);
-                  // });
                 }, onError: (error) => displayError(error));
               }),
         ),
@@ -83,5 +80,10 @@ class _HomePage extends State<HomePage> {
         ),
       ],
     ));
+  }
+
+  Future<bool> confirmation() async {
+    final bool res = await Get.dialog(Confirmation());
+    return res;
   }
 }

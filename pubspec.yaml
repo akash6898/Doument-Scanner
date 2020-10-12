@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_genius_scan: ^3.0.25 
-  open_file: ^3.0.1 
   get: ^3.13.2
   provider: ^4.3.2+2
   cloud_firestore: ^0.14.1+3

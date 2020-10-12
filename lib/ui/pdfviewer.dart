@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_viewer_plugin/pdf_viewer_plugin.dart';
@@ -38,8 +36,6 @@ class _PdfViewwerState extends State<PdfViewwer> {
 
   Future<File> writeCounter(Uint8List stream) async {
     final file = await _localFile;
-
-    // Write the file
     return file.writeAsBytes(stream);
   }
 
@@ -51,7 +47,6 @@ class _PdfViewwerState extends State<PdfViewwer> {
   Future<Uint8List> fetchPost() async {
     final response = await http.get(widget.url);
     final responseJson = response.bodyBytes;
-
     return responseJson;
   }
 

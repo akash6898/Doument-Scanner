@@ -46,7 +46,10 @@ class Server extends ChangeNotifier {
   }
 
   Future<QuerySnapshot> getAllPdfs() async {
-    QuerySnapshot temp = await databaseReference.collection("pdfs").get();
+    QuerySnapshot temp = await databaseReference
+        .collection("pdfs")
+        .orderBy("timestamp", descending: true)
+        .get();
     return temp;
   }
 }

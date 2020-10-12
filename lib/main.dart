@@ -5,7 +5,6 @@ import 'backend/firebase.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_genius_scan/flutter_genius_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:open_file/open_file.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 
